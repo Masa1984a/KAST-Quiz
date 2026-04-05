@@ -162,9 +162,9 @@ const QUIZ_META = {
   2: {
     title: "Quiz 2 — All 10 Q&A",
     pageTitle: "KAST Discord Quiz 2 — All 10 Questions, Answers & Explanations",
-    desc: 'On April 3, 2026 at 1:00 PM UTC, the <strong class="text-white">second KAST Quiz Event</strong> was held on Discord. 10 questions covering fundraising, products, regional payments, leadership, and cards — explained in <strong class="text-white">15 languages</strong>.',
+    desc: 'On April 3, 2026 at 2:00 PM UTC, the <strong class="text-white">second KAST Quiz Event</strong> was held on Discord. 10 questions covering fundraising, products, regional payments, leadership, and cards — explained in <strong class="text-white">15 languages</strong>.',
     date: "April 3, 2026",
-    time: "1:00 PM UTC",
+    time: "2:00 PM UTC",
     count: 10,
     footerTagline: "KAST Discord Quiz 2 — April 3, 2026 — 15 Languages, 10 Questions"
   }
@@ -1165,7 +1165,7 @@ const QUIZ2 = [
 
 // ── App State ──
 let currentLang = "en";
-let currentQuiz = 1;
+let currentQuiz = new URLSearchParams(window.location.search).get("quiz") === "2" ? 2 : 1;
 
 // ── Render flag nav ──
 function renderFlags() {
