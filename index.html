@@ -34,6 +34,8 @@
     .flag-btn:hover { opacity: 0.85; transform: scale(1.1); }
     .flag-btn.active { opacity: 1; transform: scale(1.15); box-shadow: 0 0 0 2px #A78BFA; }
     .fi { border-radius: 3px; }
+    .quiz-tab { transition: all 0.15s ease; }
+    .quiz-tab.active { background: rgba(167,139,250,0.15); border-color: #A78BFA; color: #A78BFA; }
   </style>
 </head>
 <body class="font-sans min-h-screen">
@@ -42,7 +44,7 @@
   <header class="relative border-b border-kast-border">
     <div class="max-w-4xl mx-auto px-4 pt-8 pb-6 text-center">
       <p class="text-kast-accent font-semibold text-sm uppercase tracking-widest mb-3">KAST Discord Community</p>
-      <h1 class="text-3xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-white via-gray-200 to-kast-muted bg-clip-text text-transparent">
+      <h1 id="hero-title" class="text-3xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-white via-gray-200 to-kast-muted bg-clip-text text-transparent">
         Quiz Event — All 15 Q&A
       </h1>
       <p class="text-kast-muted max-w-2xl mx-auto leading-relaxed" id="hero-desc">
@@ -50,42 +52,29 @@
         15 questions covering core features, leadership, fees, and more — explained in <strong class="text-white">15 languages</strong>.
       </p>
 
+      <!-- Quiz Tabs -->
+      <div class="flex justify-center gap-3 mt-5" id="quiz-tabs">
+        <button class="quiz-tab px-5 py-2 rounded-full border border-kast-border bg-kast-card text-sm font-semibold text-kast-muted hover:text-white active" data-quiz="1">Quiz 1 — Mar 20</button>
+        <button class="quiz-tab px-5 py-2 rounded-full border border-kast-border bg-kast-card text-sm font-semibold text-kast-muted hover:text-white" data-quiz="2">Quiz 2 — Apr 3</button>
+      </div>
+
       <!-- Flag Language Switcher -->
       <nav class="flex flex-wrap justify-center gap-2 mt-6" id="flag-nav" aria-label="Language selector"></nav>
 
       <!-- Event Info -->
-      <div class="flex flex-wrap justify-center gap-3 mt-6 text-sm">
-        <div class="flex items-center gap-2 bg-kast-card px-4 py-2 rounded-full border border-kast-border">
-          <span>📅</span> <span>March 20, 2026</span>
-        </div>
-        <div class="flex items-center gap-2 bg-kast-card px-4 py-2 rounded-full border border-kast-border">
-          <span>🕐</span> <span>1:00 PM UTC</span>
-        </div>
-        <div class="flex items-center gap-2 bg-kast-card px-4 py-2 rounded-full border border-kast-border">
-          <span>💬</span> <span>KAST Official Discord</span>
-        </div>
-        <div class="flex items-center gap-2 bg-kast-card px-4 py-2 rounded-full border border-kast-border">
-          <span>❓</span> <span>15 Questions</span>
-        </div>
-      </div>
+      <div id="event-info" class="flex flex-wrap justify-center gap-3 mt-6 text-sm"></div>
     </div>
   </header>
 
   <!-- Questions Section -->
   <main class="max-w-4xl mx-auto px-4 py-8 space-y-6" id="questions-container">
     <!-- Category Labels -->
-    <div class="flex flex-wrap gap-2 text-xs font-semibold mb-2">
-      <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Q1–Q4: Core Products</span>
-      <span class="px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">Q5–Q7: Leadership & Fundraising</span>
-      <span class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">Q8–Q10: Cards & Rewards</span>
-      <span class="px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20">Q11–Q13: Stablecoins & Fees</span>
-      <span class="px-3 py-1 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20">Q14–Q15: Staking & Team</span>
-    </div>
+    <div id="category-labels" class="flex flex-wrap gap-2 text-xs font-semibold mb-2"></div>
     <!-- Questions rendered by JS -->
   </main>
 
-  <!-- Summary -->
-  <div class="max-w-4xl mx-auto px-4 pb-4">
+  <!-- Summary Quiz 1 -->
+  <div id="summary-quiz1" class="max-w-4xl mx-auto px-4 pb-4">
     <div class="bg-kast-card rounded-xl border border-kast-border p-6">
       <h2 class="text-xl font-bold text-white mb-4">Looking Back at the Quiz</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
@@ -96,6 +85,21 @@
         <div class="flex items-start gap-2"><span class="text-rose-400 mt-0.5">&#9679;</span><span><strong class="text-white">Q14–Q15:</strong> <span class="text-kast-muted">SOL Staking & Executive Team</span></span></div>
       </div>
       <p class="text-kast-muted text-sm mt-4">More than just a quiz — it was a structured overview of what makes KAST unique. This was the very first Discord Quiz Event!</p>
+    </div>
+  </div>
+
+  <!-- Summary Quiz 2 -->
+  <div id="summary-quiz2" class="max-w-4xl mx-auto px-4 pb-4" style="display:none">
+    <div class="bg-kast-card rounded-xl border border-kast-border p-6">
+      <h2 class="text-xl font-bold text-white mb-4">Looking Back at Quiz 2</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+        <div class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">&#9679;</span><span><strong class="text-white">Q1:</strong> <span class="text-kast-muted">Fundraising ($80M Series A)</span></span></div>
+        <div class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">&#9679;</span><span><strong class="text-white">Q2–Q4:</strong> <span class="text-kast-muted">Products & Programs (KAST Tag, Affiliate Program)</span></span></div>
+        <div class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">&#9679;</span><span><strong class="text-white">Q5–Q7:</strong> <span class="text-kast-muted">Regional Payments (PIX, SPEI, KAST Pay)</span></span></div>
+        <div class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">&#9679;</span><span><strong class="text-white">Q8:</strong> <span class="text-kast-muted">Leadership (Andy Goldin, CDSO)</span></span></div>
+        <div class="flex items-start gap-2"><span class="text-rose-400 mt-0.5">&#9679;</span><span><strong class="text-white">Q9–Q10:</strong> <span class="text-kast-muted">Fees & Cards (Solana fees, Illuma card)</span></span></div>
+      </div>
+      <p class="text-kast-muted text-sm mt-4">The second quiz deepened the community's knowledge of KAST's expanding global presence and product suite.</p>
     </div>
   </div>
 
@@ -122,7 +126,7 @@
         </div>
       </div>
     </div>
-    <p class="text-center text-xs text-kast-muted mt-6">KAST Discord Quiz Event — March 20, 2026 — 15 Languages, 15 Questions</p>
+    <p id="footer-tagline" class="text-center text-xs text-kast-muted mt-6">KAST Discord Quiz Event — March 20, 2026 — 15 Languages, 15 Questions</p>
   </footer>
 
 <script>
@@ -144,8 +148,56 @@ const LANGS = [
   { code: "ja", flag: "jp", label: "日本語" }
 ];
 
+// ── Quiz metadata ──
+const QUIZ_META = {
+  1: {
+    title: "Quiz Event — All 15 Q&A",
+    pageTitle: "KAST Discord Quiz — All 15 Questions, Answers & Explanations",
+    desc: 'On March 20, 2026 at 1:00 PM UTC, the <strong class="text-white">first-ever KAST Quiz Event</strong> was held on Discord. 15 questions covering core features, leadership, fees, and more — explained in <strong class="text-white">15 languages</strong>.',
+    date: "March 20, 2026",
+    time: "1:00 PM UTC",
+    count: 15,
+    footerTagline: "KAST Discord Quiz Event — March 20, 2026 — 15 Languages, 15 Questions"
+  },
+  2: {
+    title: "Quiz 2 — All 10 Q&A",
+    pageTitle: "KAST Discord Quiz 2 — All 10 Questions, Answers & Explanations",
+    desc: 'On April 3, 2026 at 1:00 PM UTC, the <strong class="text-white">second KAST Quiz Event</strong> was held on Discord. 10 questions covering fundraising, products, regional payments, leadership, and cards — explained in <strong class="text-white">15 languages</strong>.',
+    date: "April 3, 2026",
+    time: "1:00 PM UTC",
+    count: 10,
+    footerTagline: "KAST Discord Quiz 2 — April 3, 2026 — 15 Languages, 10 Questions"
+  }
+};
+
+// ── Quiz categories ──
+const QUIZ_CATEGORIES = {
+  1: [
+    { label: "Q1–Q4: Core Products", color: "emerald" },
+    { label: "Q5–Q7: Leadership & Fundraising", color: "blue" },
+    { label: "Q8–Q10: Cards & Rewards", color: "amber" },
+    { label: "Q11–Q13: Stablecoins & Fees", color: "purple" },
+    { label: "Q14–Q15: Staking & Team", color: "rose" }
+  ],
+  2: [
+    { label: "Q1: Fundraising", color: "blue" },
+    { label: "Q2–Q4: Products & Programs", color: "emerald" },
+    { label: "Q5–Q7: Regional Payments", color: "amber" },
+    { label: "Q8: Leadership", color: "purple" },
+    { label: "Q9–Q10: Fees & Cards", color: "rose" }
+  ]
+};
+
 // ── Category color map ──
-function catColor(n) {
+function catColor(n, quiz) {
+  if (quiz === 2) {
+    if (n === 1) return ["blue", "bg-blue-500/10 text-blue-400"];
+    if (n <= 4) return ["emerald", "bg-emerald-500/10 text-emerald-400"];
+    if (n <= 7) return ["amber", "bg-amber-500/10 text-amber-400"];
+    if (n <= 8) return ["purple", "bg-purple-500/10 text-purple-400"];
+    return ["rose", "bg-rose-500/10 text-rose-400"];
+  }
+  // Quiz 1 default
   if (n <= 4) return ["emerald", "bg-emerald-500/10 text-emerald-400"];
   if (n <= 7) return ["blue", "bg-blue-500/10 text-blue-400"];
   if (n <= 10) return ["amber", "bg-amber-500/10 text-amber-400"];
@@ -153,7 +205,7 @@ function catColor(n) {
   return ["rose", "bg-rose-500/10 text-rose-400"];
 }
 
-// ── Quiz Data (all 15 questions × 14 languages) ──
+// ── Quiz 1 Data (all 15 questions × 14 languages) ──
 const QUIZ = [
   // Q1
   {
@@ -727,8 +779,393 @@ const QUIZ = [
   }
 ];
 
+// ── Quiz 2 Data (10 questions × 14 languages) ──
+const QUIZ2 = [
+  // Q1
+  {
+    q: {
+      en: "According to the KAST blog, what was the primary purpose of the $80M Series A funding round announced by the company?",
+      pt: "De acordo com o blog da KAST, qual foi o objetivo principal da rodada de financiamento Série A de $80M anunciada pela empresa?",
+      es: "Según el blog de KAST, ¿cuál fue el propósito principal de la ronda de financiación Serie A de $80M anunciada por la empresa?",
+      fr: "Selon le blog de KAST, quel était l'objectif principal du tour de financement Série A de 80 M$ annoncé par l'entreprise ?",
+      ru: "Согласно блогу KAST, какова была основная цель раунда финансирования Series A на $80 млн?",
+      pcm: "According to KAST blog, wetin be the main purpose of the $80M Series A funding wey the company announce?",
+      id: "Menurut blog KAST, apa tujuan utama dari putaran pendanaan Series A senilai $80 juta yang diumumkan perusahaan?",
+      vi: "Theo blog KAST, mục đích chính của vòng gọi vốn Series A trị giá 80 triệu USD là gì?",
+      hi: "KAST ब्लॉग के अनुसार, कंपनी द्वारा घोषित $80M सीरीज A फंडिंग राउंड का मुख्य उद्देश्य क्या था?",
+      bn: "KAST ব্লগ অনুসারে, কোম্পানির ঘোষিত $80M সিরিজ A ফান্ডিং রাউন্ডের প্রাথমিক উদ্দেশ্য কী ছিল?",
+      ar: "وفقاً لمدونة KAST، ما كان الهدف الرئيسي لجولة تمويل Series A بقيمة 80 مليون دولار؟",
+      zh: "据KAST博客，公司宣布的8000万美元A轮融资的主要目的是什么？",
+      ko: "KAST 블로그에 따르면, 회사가 발표한 8천만 달러 시리즈 A 펀딩 라운드의 주요 목적은 무엇이었나요?",
+      ja: "KASTブログによると、8,000万ドルのシリーズA資金調達の主な目的は？"
+    },
+    choices: ["To pivot the company entirely into NFT marketplace development.", "To launch a new decentralized exchange specifically for meme coins.", "Scale platform, grow team, ensure compliance."],
+    correct: 2,
+    links: [{label: "KAST Series A Announcement", url: "https://www.kast.xyz/blog/kast-announces-80m-series-a"}],
+    exp: {
+      en: 'KAST\'s <strong class="text-white">$80M Series A</strong> was co-led by QED Investors and Left Lane Capital. The funds are earmarked for <strong class="text-white">platform expansion, team growth, and regulatory compliance</strong> across North America, Latin America, and the Middle East.',
+      pt: 'A <strong class="text-white">Série A de $80M</strong> da KAST foi co-liderada pela QED Investors e Left Lane Capital. Os recursos são destinados à <strong class="text-white">expansão da plataforma, crescimento da equipe e conformidade regulatória</strong> na América do Norte, América Latina e Oriente Médio.',
+      es: 'La <strong class="text-white">Serie A de $80M</strong> de KAST fue co-liderada por QED Investors y Left Lane Capital. Los fondos se destinan a la <strong class="text-white">expansión de la plataforma, crecimiento del equipo y cumplimiento regulatorio</strong> en América del Norte, Latina y Oriente Medio.',
+      fr: 'La <strong class="text-white">Série A de 80 M$</strong> de KAST a été co-menée par QED Investors et Left Lane Capital. Les fonds sont destinés à l\'<strong class="text-white">expansion de la plateforme, la croissance de l\'équipe et la conformité réglementaire</strong>.',
+      ru: '<strong class="text-white">Series A на $80 млн</strong> KAST была проведена совместно QED Investors и Left Lane Capital. Средства направлены на <strong class="text-white">расширение платформы, рост команды и обеспечение соответствия нормативам</strong>.',
+      pcm: 'KAST <strong class="text-white">$80M Series A</strong> wey QED Investors and Left Lane Capital co-lead. The money go dey used for <strong class="text-white">platform expansion, team growth, and regulatory compliance</strong> for North America, Latin America, and Middle East.',
+      id: '<strong class="text-white">Series A $80 juta</strong> KAST dipimpin bersama oleh QED Investors dan Left Lane Capital. Dana tersebut dialokasikan untuk <strong class="text-white">ekspansi platform, pertumbuhan tim, dan kepatuhan regulasi</strong>.',
+      vi: '<strong class="text-white">Series A trị giá 80 triệu USD</strong> của KAST được đồng dẫn đầu bởi QED Investors và Left Lane Capital. Quỹ được dành cho <strong class="text-white">mở rộng nền tảng, phát triển đội ngũ và tuân thủ quy định</strong>.',
+      hi: 'KAST का <strong class="text-white">$80M सीरीज A</strong> QED Investors और Left Lane Capital ने संयुक्त रूप से नेतृत्व किया। धन <strong class="text-white">प्लेटफॉर्म विस्तार, टीम वृद्धि और नियामक अनुपालन</strong> के लिए है।',
+      bn: 'KAST-এর <strong class="text-white">$80M সিরিজ A</strong> QED Investors এবং Left Lane Capital সহ-নেতৃত্বে পরিচালিত হয়েছিল। তহবিল <strong class="text-white">প্ল্যাটফর্ম সম্প্রসারণ, দল বৃদ্ধি এবং নিয়ন্ত্রক সম্মতি</strong> নিশ্চিত করতে ব্যবহৃত হবে।',
+      ar: 'قادت <strong class="text-white">جولة Series A بقيمة 80 مليون دولار</strong> كل من QED Investors وLeft Lane Capital. الأموال مخصصة لـ<strong class="text-white">توسيع المنصة ونمو الفريق والامتثال التنظيمي</strong>.',
+      zh: 'KAST的<strong class="text-white">8000万美元A轮融资</strong>由QED Investors和Left Lane Capital联合领投。资金用于<strong class="text-white">平台扩展、团队壮大和合规建设</strong>。',
+      ko: 'KAST의 <strong class="text-white">8천만 달러 시리즈 A</strong>는 QED Investors와 Left Lane Capital이 공동 리드했습니다. 자금은 <strong class="text-white">플랫폼 확장, 팀 성장, 규제 준수</strong>에 사용됩니다.',
+      ja: 'KASTの<strong class="text-white">8,000万ドルのシリーズA</strong>はQED InvestorsとLeft Lane Capitalが共同リード。資金は<strong class="text-white">プラットフォーム拡大、チーム強化、規制コンプライアンス</strong>に充てられ、北米・中南米・中東での展開を加速します。'
+    }
+  },
+  // Q2
+  {
+    q: {
+      en: "What is the function of the 'KAST Tag' feature described in the blog?",
+      pt: "Qual é a função do recurso 'KAST Tag' descrito no blog?",
+      es: "¿Cuál es la función de la característica 'KAST Tag' descrita en el blog?",
+      fr: "Quelle est la fonction de la fonctionnalité 'KAST Tag' décrite dans le blog ?",
+      ru: "Какова функция 'KAST Tag', описанная в блоге?",
+      pcm: "Wetin be the function of 'KAST Tag' feature wey dem describe for the blog?",
+      id: "Apa fungsi fitur 'KAST Tag' yang dijelaskan di blog?",
+      vi: "Chức năng của tính năng 'KAST Tag' được mô tả trong blog là gì?",
+      hi: "ब्लॉग में वर्णित 'KAST Tag' फीचर का कार्य क्या है?",
+      bn: "ব্লগে বর্ণিত 'KAST Tag' ফিচারের কাজ কী?",
+      ar: "ما هي وظيفة ميزة 'KAST Tag' المذكورة في المدونة؟",
+      zh: "博客中描述的'KAST Tag'功能是什么？",
+      ko: "블로그에 설명된 'KAST Tag' 기능은 무엇인가요?",
+      ja: "ブログで紹介されている「KAST Tag」機能とは？"
+    },
+    choices: ["A physical sticker you put on your phone to enable NFC payments.", "A specialized NFT that grants access to private Discord channels.", "A loyalty program where you 'tag' merchants to get discounts.", "A way to send and receive money instantly and for free using just a username."],
+    correct: 3,
+    links: [{label: "KAST Tag Blog Post", url: "https://www.kast.xyz/blog/kast-tag-send-money-instantly-and-for-free-to-any-kast-user"}],
+    exp: {
+      en: 'KAST Tag is an <strong class="text-white">instant payment ID</strong> that lets users send and receive money for free using just a unique username. No bank details or wallet addresses needed — just scan a QR code or enter a KAST Tag, email, or phone number.',
+      pt: 'O KAST Tag é um <strong class="text-white">ID de pagamento instantâneo</strong> que permite enviar e receber dinheiro gratuitamente usando apenas um nome de usuário. Sem necessidade de dados bancários ou endereços de carteira — basta escanear um QR code ou inserir um KAST Tag.',
+      es: 'KAST Tag es un <strong class="text-white">ID de pago instantáneo</strong> que permite enviar y recibir dinero gratis usando solo un nombre de usuario. Sin datos bancarios ni direcciones de billetera — solo escanea un QR o ingresa un KAST Tag.',
+      fr: 'KAST Tag est un <strong class="text-white">identifiant de paiement instantané</strong> permettant d\'envoyer et recevoir de l\'argent gratuitement avec un simple nom d\'utilisateur. Aucune coordonnée bancaire requise — scannez un QR ou entrez un KAST Tag.',
+      ru: 'KAST Tag — это <strong class="text-white">мгновенный платёжный идентификатор</strong>, позволяющий отправлять и получать деньги бесплатно по имени пользователя. Не нужны банковские реквизиты — достаточно QR-кода или KAST Tag.',
+      pcm: 'KAST Tag na <strong class="text-white">instant payment ID</strong> wey dey let users send and receive money free using just username. No need bank details or wallet address — just scan QR code or enter KAST Tag.',
+      id: 'KAST Tag adalah <strong class="text-white">ID pembayaran instan</strong> yang memungkinkan pengguna mengirim dan menerima uang gratis hanya dengan username. Tidak perlu detail bank — cukup scan QR atau masukkan KAST Tag.',
+      vi: 'KAST Tag là <strong class="text-white">ID thanh toán tức thì</strong> cho phép gửi và nhận tiền miễn phí chỉ bằng tên người dùng. Không cần thông tin ngân hàng — chỉ cần quét mã QR hoặc nhập KAST Tag.',
+      hi: 'KAST Tag एक <strong class="text-white">तत्काल भुगतान ID</strong> है जो उपयोगकर्ताओं को केवल यूजरनेम से मुफ्त में पैसे भेजने और प्राप्त करने की सुविधा देता है। बैंक विवरण या वॉलेट पते की आवश्यकता नहीं।',
+      bn: 'KAST Tag হল একটি <strong class="text-white">তাৎক্ষণিক পেমেন্ট ID</strong> যা শুধু ইউজারনেম ব্যবহার করে বিনামূল্যে টাকা পাঠাতে ও গ্রহণ করতে দেয়। ব্যাংক তথ্য বা ওয়ালেট ঠিকানা প্রয়োজন নেই।',
+      ar: 'KAST Tag هو <strong class="text-white">معرف دفع فوري</strong> يتيح إرسال واستقبال الأموال مجاناً باستخدام اسم مستخدم فقط. لا حاجة لتفاصيل بنكية — فقط امسح QR أو أدخل KAST Tag.',
+      zh: 'KAST Tag是一个<strong class="text-white">即时支付ID</strong>，用户只需用户名即可免费收发资金。无需银行信息或钱包地址，扫描二维码或输入KAST Tag即可。',
+      ko: 'KAST Tag는 사용자 이름만으로 무료로 즉시 송금할 수 있는 <strong class="text-white">즉시 결제 ID</strong>입니다. 은행 정보나 지갑 주소 없이 QR코드 스캔이나 KAST Tag 입력만으로 가능합니다.',
+      ja: 'KAST Tagは<strong class="text-white">即時送金ID</strong>で、ユーザー名だけで無料・即時に送受金できる機能です。銀行情報やウォレットアドレスは不要で、QRコードスキャンまたはKAST Tag入力だけで送金可能です。'
+    }
+  },
+  // Q3
+  {
+    q: {
+      en: "For users in Mexico, which system did KAST integrate to allow instant MXN deposits and withdrawals?",
+      pt: "Para usuários no México, qual sistema o KAST integrou para permitir depósitos e saques instantâneos em MXN?",
+      es: "Para los usuarios en México, ¿qué sistema integró KAST para permitir depósitos y retiros instantáneos en MXN?",
+      fr: "Pour les utilisateurs au Mexique, quel système KAST a-t-il intégré pour permettre des dépôts et retraits instantanés en MXN ?",
+      ru: "Какую систему KAST интегрировал для мгновенных депозитов и выводов MXN для пользователей в Мексике?",
+      pcm: "For users wey dey Mexico, which system KAST integrate to allow instant MXN deposit and withdrawal?",
+      id: "Untuk pengguna di Meksiko, sistem apa yang diintegrasikan KAST untuk memungkinkan deposit dan penarikan MXN instan?",
+      vi: "Đối với người dùng tại Mexico, KAST đã tích hợp hệ thống nào để cho phép nạp và rút MXN tức thì?",
+      hi: "मेक्सिको के उपयोगकर्ताओं के लिए, KAST ने तत्काल MXN जमा और निकासी के लिए कौन सा सिस्टम इंटीग्रेट किया?",
+      bn: "মেক্সিকোর ব্যবহারকারীদের জন্য, KAST কোন সিস্টেম ইন্টিগ্রেট করেছে তাৎক্ষণিক MXN জমা ও উত্তোলনের জন্য?",
+      ar: "للمستخدمين في المكسيك، أي نظام دمجته KAST للسماح بإيداعات وسحوبات MXN الفورية؟",
+      zh: "对于墨西哥用户，KAST集成了哪个系统来实现即时MXN存取款？",
+      ko: "멕시코 사용자를 위해 KAST가 즉시 MXN 입출금을 위해 통합한 시스템은 무엇인가요?",
+      ja: "メキシコのユーザー向けに、KASTが即時MXN入出金のために統合したシステムは？"
+    },
+    choices: ["PIX", "ACH", "SPEI", "SEPA"],
+    correct: 2,
+    links: [{label: "KAST SPEI Integration", url: "https://www.kast.xyz/blog/kast-now-supports-spei-send-and-receive-mxn-instantly"}],
+    exp: {
+      en: 'KAST integrated <strong class="text-white">SPEI (Sistema de Pagos Electrónicos Interbancarios)</strong>, Mexico\'s central bank-operated interbank transfer network. It enables instant MXN deposits and withdrawals, with real-time conversion to USD. PIX is Brazil, ACH is US, SEPA is Europe.',
+      pt: 'O KAST integrou o <strong class="text-white">SPEI (Sistema de Pagos Electrónicos Interbancarios)</strong>, a rede de transferência interbancária do banco central mexicano. Permite depósitos e saques instantâneos em MXN com conversão em tempo real para USD.',
+      es: 'KAST integró <strong class="text-white">SPEI (Sistema de Pagos Electrónicos Interbancarios)</strong>, la red de transferencias interbancarias del banco central mexicano. Permite depósitos y retiros instantáneos en MXN con conversión en tiempo real a USD.',
+      fr: 'KAST a intégré <strong class="text-white">SPEI (Sistema de Pagos Electrónicos Interbancarios)</strong>, le réseau de transfert interbancaire de la banque centrale mexicaine. Il permet les dépôts et retraits MXN instantanés avec conversion en temps réel vers USD.',
+      ru: 'KAST интегрировал <strong class="text-white">SPEI (Sistema de Pagos Electrónicos Interbancarios)</strong> — межбанковскую платёжную сеть центрального банка Мексики. Позволяет мгновенно вносить и выводить MXN с конвертацией в USD.',
+      pcm: 'KAST integrate <strong class="text-white">SPEI (Sistema de Pagos Electrónicos Interbancarios)</strong>, na Mexico central bank interbank transfer network. E dey allow instant MXN deposit and withdrawal with real-time USD conversion.',
+      id: 'KAST mengintegrasikan <strong class="text-white">SPEI (Sistema de Pagos Electrónicos Interbancarios)</strong>, jaringan transfer antarbank yang dioperasikan bank sentral Meksiko. Memungkinkan deposit dan penarikan MXN instan dengan konversi real-time ke USD.',
+      vi: 'KAST đã tích hợp <strong class="text-white">SPEI (Sistema de Pagos Electrónicos Interbancarios)</strong>, mạng lưới chuyển tiền liên ngân hàng do ngân hàng trung ương Mexico vận hành. Cho phép nạp rút MXN tức thì với quy đổi USD theo thời gian thực.',
+      hi: 'KAST ने <strong class="text-white">SPEI (Sistema de Pagos Electrónicos Interbancarios)</strong> को एकीकृत किया, जो मेक्सिको के केंद्रीय बैंक द्वारा संचालित अंतर-बैंक ट्रांसफर नेटवर्क है। यह USD में रीयल-टाइम रूपांतरण के साथ तत्काल MXN जमा और निकासी की अनुमति देता है।',
+      bn: 'KAST <strong class="text-white">SPEI (Sistema de Pagos Electrónicos Interbancarios)</strong> ইন্টিগ্রেট করেছে, মেক্সিকোর কেন্দ্রীয় ব্যাংক পরিচালিত আন্তঃব্যাংক ট্রান্সফার নেটওয়ার্ক। এটি রিয়েল-টাইম USD রূপান্তরসহ তাৎক্ষণিক MXN জমা ও উত্তোলন সক্ষম করে।',
+      ar: 'دمجت KAST نظام <strong class="text-white">SPEI (Sistema de Pagos Electrónicos Interbancarios)</strong>، شبكة التحويل بين البنوك التي يديرها البنك المركزي المكسيكي. يتيح إيداعات وسحوبات MXN فورية مع تحويل فوري إلى USD.',
+      zh: 'KAST集成了<strong class="text-white">SPEI（墨西哥银行间电子支付系统）</strong>，这是墨西哥央行运营的银行间转账网络。支持即时MXN存取并实时转换为USD。PIX是巴西、ACH是美国、SEPA是欧洲。',
+      ko: 'KAST는 멕시코 중앙은행이 운영하는 은행간 송금 네트워크인 <strong class="text-white">SPEI</strong>를 통합했습니다. 실시간 USD 전환과 함께 즉시 MXN 입출금이 가능합니다. PIX는 브라질, ACH는 미국, SEPA는 유럽입니다.',
+      ja: 'KASTはメキシコ中央銀行が運営する銀行間送金ネットワーク<strong class="text-white">SPEI</strong>を統合しました。即時MXN入出金とリアルタイムUSD変換に対応しています。PIXはブラジル、ACHは米国、SEPAはヨーロッパの決済システムです。'
+    }
+  },
+  // Q4
+  {
+    q: {
+      en: "What is the primary benefit of the 'KAST Affiliate Program' accessible directly inside the app?",
+      pt: "Qual é o benefício principal do 'Programa de Afiliados KAST' acessível diretamente no aplicativo?",
+      es: "¿Cuál es el beneficio principal del 'Programa de Afiliados KAST' accesible directamente desde la app?",
+      fr: "Quel est le principal avantage du 'Programme d'Affiliation KAST' accessible directement dans l'application ?",
+      ru: "Каково основное преимущество 'Партнёрской программы KAST', доступной прямо в приложении?",
+      pcm: "Wetin be the main benefit of 'KAST Affiliate Program' wey you fit access directly inside the app?",
+      id: "Apa manfaat utama dari 'Program Afiliasi KAST' yang dapat diakses langsung di dalam aplikasi?",
+      vi: "Lợi ích chính của 'Chương trình Liên kết KAST' truy cập trực tiếp trong ứng dụng là gì?",
+      hi: "ऐप के अंदर सीधे एक्सेस किए जा सकने वाले 'KAST एफिलिएट प्रोग्राम' का मुख्य लाभ क्या है?",
+      bn: "অ্যাপের ভিতরে সরাসরি অ্যাক্সেসযোগ্য 'KAST অ্যাফিলিয়েট প্রোগ্রাম'-এর প্রাথমিক সুবিধা কী?",
+      ar: "ما هي الفائدة الرئيسية لـ 'برنامج شركاء KAST' المتاح مباشرة داخل التطبيق؟",
+      zh: "直接在应用内访问的'KAST联盟计划'的主要好处是什么？",
+      ko: "앱 내에서 직접 접근 가능한 'KAST 제휴 프로그램'의 주요 이점은 무엇인가요?",
+      ja: "アプリ内から直接アクセスできる「KASTアフィリエイトプログラム」の主な利点は？"
+    },
+    choices: ["It provides free flight tickets to users who refer five friends.", "It allows users to track referrals and earn rewards without a separate login.", "It gives users the ability to vote on which coins are listed next.", "It automatically converts all your friends' bank accounts to KAST."],
+    correct: 1,
+    links: [{label: "KAST Affiliate Program", url: "https://www.kast.xyz/blog/kast-adds-in-app-affiliate-sign-up-and-portal-access"}],
+    exp: {
+      en: 'The KAST Affiliate Program is <strong class="text-white">built directly into the app</strong>, so users can sign up, track referrals, and monitor rewards without a separate login. The process starts in-app (Home > Refer > Become an Affiliate) and links to your existing account.',
+      pt: 'O Programa de Afiliados KAST é <strong class="text-white">integrado diretamente no aplicativo</strong>, permitindo inscrição, rastreamento de indicações e monitoramento de recompensas sem login separado. O processo começa no app (Home > Indicar > Tornar-se Afiliado).',
+      es: 'El Programa de Afiliados KAST está <strong class="text-white">integrado directamente en la app</strong>, permitiendo registro, seguimiento de referidos y monitoreo de recompensas sin un inicio de sesión separado.',
+      fr: 'Le Programme d\'Affiliation KAST est <strong class="text-white">intégré directement dans l\'application</strong>, permettant l\'inscription, le suivi des parrainages et la surveillance des récompenses sans connexion séparée.',
+      ru: 'Партнёрская программа KAST <strong class="text-white">встроена прямо в приложение</strong>, позволяя регистрироваться, отслеживать рефералов и контролировать вознаграждения без отдельного входа.',
+      pcm: 'KAST Affiliate Program <strong class="text-white">dey built directly inside the app</strong>, so users fit sign up, track referrals, and check rewards without separate login. The process start inside app (Home > Refer > Become Affiliate).',
+      id: 'Program Afiliasi KAST <strong class="text-white">dibangun langsung di dalam aplikasi</strong>, sehingga pengguna dapat mendaftar, melacak referral, dan memantau reward tanpa login terpisah.',
+      vi: 'Chương trình Liên kết KAST được <strong class="text-white">tích hợp trực tiếp trong ứng dụng</strong>, cho phép đăng ký, theo dõi giới thiệu và giám sát phần thưởng mà không cần đăng nhập riêng.',
+      hi: 'KAST एफिलिएट प्रोग्राम <strong class="text-white">सीधे ऐप में एकीकृत</strong> है, इसलिए उपयोगकर्ता अलग लॉगिन के बिना साइन अप, रेफरल ट्रैक और रिवॉर्ड मॉनिटर कर सकते हैं।',
+      bn: 'KAST অ্যাফিলিয়েট প্রোগ্রাম <strong class="text-white">সরাসরি অ্যাপে তৈরি</strong>, তাই ব্যবহারকারীরা আলাদা লগইন ছাড়াই সাইন আপ, রেফারেল ট্র্যাক এবং রিওয়ার্ড মনিটর করতে পারেন।',
+      ar: 'برنامج شركاء KAST <strong class="text-white">مدمج مباشرة في التطبيق</strong>، مما يتيح التسجيل وتتبع الإحالات ومراقبة المكافآت دون تسجيل دخول منفصل.',
+      zh: 'KAST联盟计划<strong class="text-white">直接内置于应用中</strong>，用户无需单独登录即可注册、追踪推荐和监控奖励。流程在应用内开始（首页 > 推荐 > 成为联盟成员）。',
+      ko: 'KAST 제휴 프로그램은 <strong class="text-white">앱에 직접 내장</strong>되어 있어 별도 로그인 없이 가입, 추천 추적, 보상 모니터링이 가능합니다.',
+      ja: 'KASTアフィリエイトプログラムは<strong class="text-white">アプリ内に直接統合</strong>されており、別途ログインなしでサインアップ・紹介追跡・報酬確認が可能です。アプリ内（ホーム > 紹介 > アフィリエイトになる）から手続きが始まります。'
+    }
+  },
+  // Q5
+  {
+    q: {
+      en: "In Brazil, how can users spend their crypto balance locally according to KAST features?",
+      pt: "No Brasil, como os usuários podem gastar seu saldo cripto localmente de acordo com os recursos da KAST?",
+      es: "En Brasil, ¿cómo pueden los usuarios gastar su saldo cripto localmente según las funciones de KAST?",
+      fr: "Au Brésil, comment les utilisateurs peuvent-ils dépenser leur solde crypto localement selon les fonctionnalités de KAST ?",
+      ru: "В Бразилии, как пользователи могут тратить свой криптобаланс локально с помощью функций KAST?",
+      pcm: "For Brazil, how users fit spend their crypto balance locally according to KAST features?",
+      id: "Di Brasil, bagaimana pengguna dapat membelanjakan saldo kripto mereka secara lokal sesuai fitur KAST?",
+      vi: "Tại Brazil, người dùng có thể chi tiêu số dư crypto cục bộ bằng cách nào theo tính năng của KAST?",
+      hi: "ब्राजील में, KAST की सुविधाओं के अनुसार उपयोगकर्ता स्थानीय रूप से अपनी क्रिप्टो शेष राशि कैसे खर्च कर सकते हैं?",
+      bn: "ব্রাজিলে, KAST-এর ফিচার অনুযায়ী ব্যবহারকারীরা কীভাবে স্থানীয়ভাবে তাদের ক্রিপ্টো ব্যালেন্স খরচ করতে পারেন?",
+      ar: "في البرازيل، كيف يمكن للمستخدمين إنفاق رصيدهم من العملات المشفرة محلياً وفقاً لميزات KAST؟",
+      zh: "在巴西，用户如何根据KAST功能在本地消费加密余额？",
+      ko: "브라질에서 KAST 기능에 따라 사용자가 로컬에서 암호화폐 잔액을 사용하는 방법은?",
+      ja: "ブラジルで、KASTの機能を使ってローカルで暗号資産残高を使う方法は？"
+    },
+    choices: ["By mailing a physical check to the Central Bank.", "Through a partnership with local grocery store coupons.", "By using PIX integrated within the KAST app.", "By only using Bitcoin lightning network at street vendors."],
+    correct: 2,
+    links: [{label: "Spend Crypto in Brazil", url: "https://academy.kast.xyz/en-us/articles/spend-crypto-brazil-kast"}],
+    exp: {
+      en: 'In Brazil, KAST supports three payment methods: <strong class="text-white">KAST card</strong> (Visa merchants, USD-to-BRL conversion), <strong class="text-white">PIX scan payments</strong> (scan merchant QR for instant BRL settlement), and <strong class="text-white">mobile wallets</strong> (Apple Pay/Google Pay). PIX directly connects crypto to Brazil\'s local payment infrastructure.',
+      pt: 'No Brasil, o KAST suporta três métodos de pagamento: <strong class="text-white">cartão KAST</strong> (comerciantes Visa, conversão USD-BRL), <strong class="text-white">pagamentos PIX por QR</strong> (escaneie QR do comerciante para liquidação instantânea em BRL) e <strong class="text-white">carteiras móveis</strong> (Apple Pay/Google Pay).',
+      es: 'En Brasil, KAST soporta tres métodos de pago: <strong class="text-white">tarjeta KAST</strong> (comercios Visa, conversión USD-BRL), <strong class="text-white">pagos PIX por QR</strong> (escanea QR del comercio para liquidación instantánea en BRL) y <strong class="text-white">billeteras móviles</strong> (Apple Pay/Google Pay).',
+      fr: 'Au Brésil, KAST prend en charge trois méthodes de paiement : <strong class="text-white">carte KAST</strong> (commerçants Visa, conversion USD-BRL), <strong class="text-white">paiements PIX par QR</strong> (scannez le QR du commerçant pour un règlement instantané en BRL) et <strong class="text-white">portefeuilles mobiles</strong>.',
+      ru: 'В Бразилии KAST поддерживает три способа оплаты: <strong class="text-white">карта KAST</strong> (Visa, конвертация USD-BRL), <strong class="text-white">PIX-платежи по QR</strong> (мгновенная оплата в BRL) и <strong class="text-white">мобильные кошельки</strong> (Apple Pay/Google Pay).',
+      pcm: 'For Brazil, KAST support three payment methods: <strong class="text-white">KAST card</strong> (Visa merchants, USD-to-BRL), <strong class="text-white">PIX scan payments</strong> (scan merchant QR for instant BRL), and <strong class="text-white">mobile wallets</strong> (Apple Pay/Google Pay).',
+      id: 'Di Brasil, KAST mendukung tiga metode pembayaran: <strong class="text-white">kartu KAST</strong> (merchant Visa, konversi USD-BRL), <strong class="text-white">pembayaran PIX scan</strong> (scan QR merchant untuk settlement BRL instan), dan <strong class="text-white">dompet mobile</strong> (Apple Pay/Google Pay).',
+      vi: 'Tại Brazil, KAST hỗ trợ ba phương thức thanh toán: <strong class="text-white">thẻ KAST</strong> (Visa, chuyển đổi USD-BRL), <strong class="text-white">thanh toán PIX quét mã</strong> (quét QR để thanh toán BRL tức thì) và <strong class="text-white">ví di động</strong> (Apple Pay/Google Pay).',
+      hi: 'ब्राजील में, KAST तीन भुगतान विधियों का समर्थन करता है: <strong class="text-white">KAST कार्ड</strong> (Visa, USD-to-BRL), <strong class="text-white">PIX स्कैन भुगतान</strong> (QR स्कैन से तत्काल BRL), और <strong class="text-white">मोबाइल वॉलेट</strong> (Apple Pay/Google Pay)।',
+      bn: 'ব্রাজিলে, KAST তিনটি পেমেন্ট পদ্ধতি সমর্থন করে: <strong class="text-white">KAST কার্ড</strong> (Visa, USD-BRL রূপান্তর), <strong class="text-white">PIX স্ক্যান পেমেন্ট</strong> (তাৎক্ষণিক BRL-এ QR স্ক্যান) এবং <strong class="text-white">মোবাইল ওয়ালেট</strong> (Apple Pay/Google Pay)।',
+      ar: 'في البرازيل، تدعم KAST ثلاث طرق دفع: <strong class="text-white">بطاقة KAST</strong> (Visa، تحويل USD-BRL)، <strong class="text-white">مدفوعات PIX بمسح QR</strong> (تسوية فورية بالريال)، و<strong class="text-white">محافظ الهاتف</strong> (Apple Pay/Google Pay).',
+      zh: '在巴西，KAST支持三种支付方式：<strong class="text-white">KAST卡</strong>（Visa商户，USD转BRL）、<strong class="text-white">PIX扫码支付</strong>（扫描商户QR即时BRL结算）和<strong class="text-white">移动钱包</strong>（Apple Pay/Google Pay）。',
+      ko: '브라질에서 KAST는 세 가지 결제 방법을 지원합니다: <strong class="text-white">KAST 카드</strong>(Visa, USD-BRL 전환), <strong class="text-white">PIX 스캔 결제</strong>(QR 스캔으로 즉시 BRL 정산), <strong class="text-white">모바일 지갑</strong>(Apple Pay/Google Pay).',
+      ja: 'ブラジルではKASTが3つの支払い方法を提供：<strong class="text-white">KASTカード</strong>（Visa加盟店、USD→BRL変換）、<strong class="text-white">PIXスキャン決済</strong>（QRスキャンでBRL即時決済）、<strong class="text-white">モバイルウォレット</strong>（Apple Pay/Google Pay）。PIXが暗号資産とブラジルのローカル決済を直結します。'
+    }
+  },
+  // Q6
+  {
+    q: {
+      en: "What is 'KAST Academy' according to the blog announcements?",
+      pt: "O que é 'KAST Academy' de acordo com os anúncios do blog?",
+      es: "¿Qué es 'KAST Academy' según los anuncios del blog?",
+      fr: "Qu'est-ce que 'KAST Academy' selon les annonces du blog ?",
+      ru: "Что такое 'KAST Academy' согласно анонсам в блоге?",
+      pcm: "Wetin be 'KAST Academy' according to the blog announcements?",
+      id: "Apa itu 'KAST Academy' menurut pengumuman blog?",
+      vi: "'KAST Academy' là gì theo các thông báo trên blog?",
+      hi: "ब्लॉग घोषणाओं के अनुसार 'KAST Academy' क्या है?",
+      bn: "ব্লগ ঘোষণা অনুযায়ী 'KAST Academy' কী?",
+      ar: "ما هي 'KAST Academy' وفقاً لإعلانات المدونة؟",
+      zh: "根据博客公告，'KAST Academy'是什么？",
+      ko: "블로그 공지에 따르면 'KAST Academy'는 무엇인가요?",
+      ja: "ブログで発表された「KAST Academy」とは？"
+    },
+    choices: ["A physical university campus located in Dubai.", "Educational hub for stablecoins, DeFi, and KAST features.", "A trading bot that automatically buys low and sells high.", "A recruitment portal for people wanting to work as KAST engineers."],
+    correct: 1,
+    links: [{label: "KAST Academy Launch", url: "https://www.kast.xyz/blog/kast-academy-is-live-learn-how-to-use-kast-and-modern-money"}],
+    exp: {
+      en: 'KAST Academy is an <strong class="text-white">educational platform</strong> covering stablecoins, DeFi, Solana, crypto fundamentals, security, and KAST product guides. It is accessible at <strong class="text-white">academy.kast.xyz</strong> from any browser.',
+      pt: 'A KAST Academy é uma <strong class="text-white">plataforma educacional</strong> que cobre stablecoins, DeFi, Solana, fundamentos de cripto, segurança e guias de produtos KAST. Acessível em <strong class="text-white">academy.kast.xyz</strong>.',
+      es: 'KAST Academy es una <strong class="text-white">plataforma educativa</strong> que cubre stablecoins, DeFi, Solana, fundamentos cripto, seguridad y guías de productos KAST. Accesible en <strong class="text-white">academy.kast.xyz</strong>.',
+      fr: 'KAST Academy est une <strong class="text-white">plateforme éducative</strong> couvrant les stablecoins, la DeFi, Solana, les fondamentaux crypto, la sécurité et les guides produits KAST. Accessible sur <strong class="text-white">academy.kast.xyz</strong>.',
+      ru: 'KAST Academy — это <strong class="text-white">образовательная платформа</strong>, охватывающая стейблкоины, DeFi, Solana, основы крипто, безопасность и руководства по продуктам KAST. Доступна на <strong class="text-white">academy.kast.xyz</strong>.',
+      pcm: 'KAST Academy na <strong class="text-white">educational platform</strong> wey cover stablecoins, DeFi, Solana, crypto basics, security, and KAST product guides. You fit access am for <strong class="text-white">academy.kast.xyz</strong>.',
+      id: 'KAST Academy adalah <strong class="text-white">platform edukasi</strong> yang mencakup stablecoin, DeFi, Solana, dasar-dasar kripto, keamanan, dan panduan produk KAST. Dapat diakses di <strong class="text-white">academy.kast.xyz</strong>.',
+      vi: 'KAST Academy là <strong class="text-white">nền tảng giáo dục</strong> về stablecoin, DeFi, Solana, kiến thức crypto cơ bản, bảo mật và hướng dẫn sản phẩm KAST. Truy cập tại <strong class="text-white">academy.kast.xyz</strong>.',
+      hi: 'KAST Academy एक <strong class="text-white">शैक्षिक प्लेटफॉर्म</strong> है जो स्टेबलकॉइन, DeFi, Solana, क्रिप्टो बुनियादी बातें, सुरक्षा और KAST उत्पाद गाइड को कवर करता है। <strong class="text-white">academy.kast.xyz</strong> पर उपलब्ध।',
+      bn: 'KAST Academy একটি <strong class="text-white">শিক্ষামূলক প্ল্যাটফর্ম</strong> যা স্টেবলকয়েন, DeFi, Solana, ক্রিপ্টো মৌলিক বিষয়, নিরাপত্তা এবং KAST পণ্য গাইড কভার করে। <strong class="text-white">academy.kast.xyz</strong>-এ অ্যাক্সেসযোগ্য।',
+      ar: 'KAST Academy هي <strong class="text-white">منصة تعليمية</strong> تغطي العملات المستقرة وDeFi وSolana وأساسيات الكريبتو والأمان وأدلة منتجات KAST. متاحة على <strong class="text-white">academy.kast.xyz</strong>.',
+      zh: 'KAST Academy是一个<strong class="text-white">教育平台</strong>，涵盖稳定币、DeFi、Solana、加密基础知识、安全和KAST产品指南。可在<strong class="text-white">academy.kast.xyz</strong>访问。',
+      ko: 'KAST Academy는 스테이블코인, DeFi, Solana, 암호화폐 기초, 보안, KAST 제품 가이드를 다루는 <strong class="text-white">교육 플랫폼</strong>입니다. <strong class="text-white">academy.kast.xyz</strong>에서 접근 가능합니다.',
+      ja: 'KAST Academyはステーブルコイン、DeFi、Solana、暗号資産の基礎、セキュリティ、KAST製品ガイドをカバーする<strong class="text-white">教育プラットフォーム</strong>です。<strong class="text-white">academy.kast.xyz</strong>から任意のブラウザでアクセスできます。'
+    }
+  },
+  // Q7
+  {
+    q: {
+      en: "How does KAST help users pay off a mortgage in Dubai?",
+      pt: "Como o KAST ajuda os usuários a pagar uma hipoteca em Dubai?",
+      es: "¿Cómo ayuda KAST a los usuarios a pagar una hipoteca en Dubái?",
+      fr: "Comment KAST aide-t-il les utilisateurs à rembourser un prêt hypothécaire à Dubaï ?",
+      ru: "Как KAST помогает пользователям оплачивать ипотеку в Дубае?",
+      pcm: "How KAST dey help users pay off mortgage for Dubai?",
+      id: "Bagaimana KAST membantu pengguna membayar hipotek di Dubai?",
+      vi: "KAST giúp người dùng thanh toán thế chấp ở Dubai bằng cách nào?",
+      hi: "KAST दुबई में बंधक भुगतान में उपयोगकर्ताओं की कैसे मदद करता है?",
+      bn: "KAST কীভাবে ব্যবহারকারীদের দুবাইয়ে বন্ধকী পরিশোধে সাহায্য করে?",
+      ar: "كيف تساعد KAST المستخدمين في سداد الرهن العقاري في دبي؟",
+      zh: "KAST如何帮助用户在迪拜偿还抵押贷款？",
+      ko: "KAST는 두바이에서 사용자가 모기지를 상환하는 데 어떻게 도움을 주나요?",
+      ja: "KASTはドバイの住宅ローン支払いをどのようにサポートする？"
+    },
+    choices: ["By giving users free real estate in exchange for KAST points.", "By providing a 0% interest loan paid in Bitcoin.", "By converting stablecoins into AED and sending them to a UAE bank account.", "By allowing users to 'stake' their house as an NFT."],
+    correct: 2,
+    links: [{label: "Earn Global, Spend Local", url: "https://www.kast.xyz/blog/earn-global-spend-local-turn-stablecoins-into-your-local-currency-with-kast"}],
+    exp: {
+      en: 'KAST Pay enables users to <strong class="text-white">convert stablecoins to AED</strong> and send funds directly to a UAE bank account. The AED conversion fee is <strong class="text-white">1%</strong>, with a $3 transfer fee and next-day settlement through licensed FX partners.',
+      pt: 'O KAST Pay permite <strong class="text-white">converter stablecoins em AED</strong> e enviar fundos diretamente para uma conta bancária dos EAU. A taxa de conversão é de <strong class="text-white">1%</strong>, com taxa de transferência de $3 e liquidação no dia seguinte.',
+      es: 'KAST Pay permite <strong class="text-white">convertir stablecoins a AED</strong> y enviar fondos directamente a una cuenta bancaria de los EAU. La comisión de conversión es del <strong class="text-white">1%</strong>, con $3 de tarifa de transferencia y liquidación al día siguiente.',
+      fr: 'KAST Pay permet de <strong class="text-white">convertir des stablecoins en AED</strong> et d\'envoyer des fonds directement vers un compte bancaire aux EAU. Les frais de conversion sont de <strong class="text-white">1%</strong>, avec des frais de transfert de 3$ et un règlement le lendemain.',
+      ru: 'KAST Pay позволяет <strong class="text-white">конвертировать стейблкоины в AED</strong> и отправлять средства на банковский счёт в ОАЭ. Комиссия за конвертацию — <strong class="text-white">1%</strong>, трансфер — $3, зачисление — на следующий день.',
+      pcm: 'KAST Pay dey allow users <strong class="text-white">convert stablecoins to AED</strong> and send money straight to UAE bank account. Conversion fee na <strong class="text-white">1%</strong>, transfer fee na $3, settlement na next day.',
+      id: 'KAST Pay memungkinkan pengguna <strong class="text-white">mengonversi stablecoin ke AED</strong> dan mengirim dana langsung ke rekening bank UAE. Biaya konversi <strong class="text-white">1%</strong>, biaya transfer $3, settlement keesokan harinya.',
+      vi: 'KAST Pay cho phép <strong class="text-white">chuyển đổi stablecoin sang AED</strong> và gửi tiền trực tiếp đến tài khoản ngân hàng UAE. Phí chuyển đổi <strong class="text-white">1%</strong>, phí chuyển $3, thanh toán ngày hôm sau.',
+      hi: 'KAST Pay उपयोगकर्ताओं को <strong class="text-white">स्टेबलकॉइन को AED में बदलने</strong> और UAE बैंक खाते में सीधे फंड भेजने की अनुमति देता है। AED रूपांतरण शुल्क <strong class="text-white">1%</strong> है, $3 ट्रांसफर शुल्क और अगले दिन निपटान।',
+      bn: 'KAST Pay ব্যবহারকারীদের <strong class="text-white">স্টেবলকয়েন AED-তে রূপান্তর</strong> করে সরাসরি UAE ব্যাংক অ্যাকাউন্টে পাঠাতে দেয়। AED রূপান্তর ফি <strong class="text-white">1%</strong>, ট্রান্সফার ফি $3, পরের দিন সেটেলমেন্ট।',
+      ar: 'يتيح KAST Pay <strong class="text-white">تحويل العملات المستقرة إلى AED</strong> وإرسال الأموال مباشرة إلى حساب بنكي في الإمارات. رسوم التحويل <strong class="text-white">1%</strong> مع رسوم نقل 3$ وتسوية في اليوم التالي.',
+      zh: 'KAST Pay允许用户<strong class="text-white">将稳定币转换为AED</strong>并直接汇款至UAE银行账户。AED转换费为<strong class="text-white">1%</strong>，转账费$3，次日结算。',
+      ko: 'KAST Pay는 <strong class="text-white">스테이블코인을 AED로 전환</strong>하여 UAE 은행 계좌로 직접 송금할 수 있게 합니다. AED 전환 수수료는 <strong class="text-white">1%</strong>, 송금 수수료 $3, 익일 정산입니다.',
+      ja: 'KAST Payでは<strong class="text-white">ステーブルコインをAEDに変換</strong>し、UAE銀行口座へ直接送金できます。AED変換手数料は<strong class="text-white">1%</strong>、送金手数料$3、翌日決済で、ライセンスFXパートナー経由で処理されます。'
+    }
+  },
+  // Q8
+  {
+    q: {
+      en: "Who is the Chief Data & Strategy Officer (CDSO) of KAST mentioned in the 'People' section?",
+      pt: "Quem é o Chief Data & Strategy Officer (CDSO) da KAST mencionado na seção 'People'?",
+      es: "¿Quién es el Chief Data & Strategy Officer (CDSO) de KAST mencionado en la sección 'People'?",
+      fr: "Qui est le Chief Data & Strategy Officer (CDSO) de KAST mentionné dans la section 'People' ?",
+      ru: "Кто является Chief Data & Strategy Officer (CDSO) KAST, упомянутым в разделе 'People'?",
+      pcm: "Who be the Chief Data & Strategy Officer (CDSO) of KAST wey dem mention for the 'People' section?",
+      id: "Siapa Chief Data & Strategy Officer (CDSO) KAST yang disebutkan di bagian 'People'?",
+      vi: "Ai là Chief Data & Strategy Officer (CDSO) của KAST được đề cập trong mục 'People'?",
+      hi: "'People' खंड में उल्लिखित KAST के Chief Data & Strategy Officer (CDSO) कौन हैं?",
+      bn: "'People' বিভাগে উল্লিখিত KAST-এর Chief Data & Strategy Officer (CDSO) কে?",
+      ar: "من هو كبير مسؤولي البيانات والاستراتيجية (CDSO) في KAST المذكور في قسم 'People'؟",
+      zh: "'People'版块中提到的KAST首席数据与战略官(CDSO)是谁？",
+      ko: "'People' 섹션에 언급된 KAST의 Chief Data & Strategy Officer (CDSO)는 누구인가요?",
+      ja: "「People」セクションで紹介されているKASTのChief Data & Strategy Officer（CDSO）は誰？"
+    },
+    choices: ["Sam Kerrins", "Chameera Wijebandara", "Andy Goldin", "Brad Jaffe"],
+    correct: 2,
+    links: [{label: "Meet Andy Goldin", url: "https://www.kast.xyz/blog/meet-kast-chief-data-strategy-officer-andy-goldin"}],
+    exp: {
+      en: '<strong class="text-white">Andy Goldin</strong> joined KAST in January 2026 as CDSO and Chief of Staff to CEO Raagulan Pathy. He previously led data teams at <strong class="text-white">Uber Asia</strong> (early team member) and <strong class="text-white">Binance</strong> (scaling analytics from 10 to 80–90 people).',
+      pt: '<strong class="text-white">Andy Goldin</strong> ingressou na KAST em janeiro de 2026 como CDSO e Chefe de Gabinete do CEO. Anteriormente liderou equipes de dados na <strong class="text-white">Uber Asia</strong> e <strong class="text-white">Binance</strong> (expandindo analytics de 10 para 80–90 pessoas).',
+      es: '<strong class="text-white">Andy Goldin</strong> se unió a KAST en enero de 2026 como CDSO y Jefe de Gabinete del CEO. Anteriormente lideró equipos de datos en <strong class="text-white">Uber Asia</strong> y <strong class="text-white">Binance</strong> (expandiendo analytics de 10 a 80–90 personas).',
+      fr: '<strong class="text-white">Andy Goldin</strong> a rejoint KAST en janvier 2026 en tant que CDSO et Chef de Cabinet du PDG. Il a précédemment dirigé les équipes data chez <strong class="text-white">Uber Asia</strong> et <strong class="text-white">Binance</strong> (de 10 à 80–90 personnes).',
+      ru: '<strong class="text-white">Энди Голдин</strong> присоединился к KAST в январе 2026 года как CDSO и руководитель аппарата CEO. Ранее руководил командами данных в <strong class="text-white">Uber Asia</strong> и <strong class="text-white">Binance</strong> (расширив аналитику с 10 до 80–90 человек).',
+      pcm: '<strong class="text-white">Andy Goldin</strong> join KAST for January 2026 as CDSO and Chief of Staff to CEO. Before, e lead data teams for <strong class="text-white">Uber Asia</strong> and <strong class="text-white">Binance</strong> (scale analytics from 10 to 80–90 people).',
+      id: '<strong class="text-white">Andy Goldin</strong> bergabung dengan KAST pada Januari 2026 sebagai CDSO dan Chief of Staff CEO. Sebelumnya memimpin tim data di <strong class="text-white">Uber Asia</strong> dan <strong class="text-white">Binance</strong> (memperluas analytics dari 10 menjadi 80–90 orang).',
+      vi: '<strong class="text-white">Andy Goldin</strong> gia nhập KAST vào tháng 1/2026 với vai trò CDSO và Chánh văn phòng CEO. Trước đó dẫn dắt đội ngũ dữ liệu tại <strong class="text-white">Uber Asia</strong> và <strong class="text-white">Binance</strong> (mở rộng từ 10 lên 80–90 người).',
+      hi: '<strong class="text-white">एंडी गोल्डिन</strong> जनवरी 2026 में KAST में CDSO और CEO के चीफ ऑफ स्टाफ के रूप में शामिल हुए। उन्होंने पहले <strong class="text-white">Uber Asia</strong> और <strong class="text-white">Binance</strong> में डेटा टीमों का नेतृत्व किया (10 से 80–90 लोगों तक विस्तार)।',
+      bn: '<strong class="text-white">অ্যান্ডি গোল্ডিন</strong> ২০২৬ সালের জানুয়ারিতে CDSO এবং CEO-র চিফ অফ স্টাফ হিসেবে KAST-এ যোগ দেন। তিনি আগে <strong class="text-white">Uber Asia</strong> এবং <strong class="text-white">Binance</strong>-এ ডেটা টিম নেতৃত্ব দিয়েছেন (১০ থেকে ৮০-৯০ জনে সম্প্রসারণ)।',
+      ar: 'انضم <strong class="text-white">آندي غولدين</strong> إلى KAST في يناير 2026 كـ CDSO ورئيس أركان الرئيس التنفيذي. قاد سابقاً فرق البيانات في <strong class="text-white">Uber Asia</strong> و<strong class="text-white">Binance</strong> (توسيع التحليلات من 10 إلى 80-90 شخصاً).',
+      zh: '<strong class="text-white">Andy Goldin</strong>于2026年1月加入KAST担任CDSO兼CEO幕僚长。他此前在<strong class="text-white">Uber亚洲</strong>（早期团队成员）和<strong class="text-white">Binance</strong>（将分析团队从10人扩展至80-90人）领导数据团队。',
+      ko: '<strong class="text-white">Andy Goldin</strong>은 2026년 1월 CDSO 겸 CEO 비서실장으로 KAST에 합류했습니다. 이전에 <strong class="text-white">Uber Asia</strong>와 <strong class="text-white">Binance</strong>에서 데이터 팀을 이끌었습니다(10명에서 80-90명으로 확대).',
+      ja: '<strong class="text-white">Andy Goldin</strong>は2026年1月にCDSO兼CEOチーフ・オブ・スタッフとしてKASTに入社。<strong class="text-white">Uber Asia</strong>（初期メンバー）や<strong class="text-white">Binance</strong>（分析チームを10人から80〜90人に拡大）でデータ部門を率いた経験を持ちます。'
+    }
+  },
+  // Q9
+  {
+    q: {
+      en: "When sending stablecoins via the Solana network on KAST, what is the standard fee structure mentioned in the step-by-step guide?",
+      pt: "Ao enviar stablecoins pela rede Solana no KAST, qual é a estrutura de taxas padrão mencionada no guia passo a passo?",
+      es: "Al enviar stablecoins por la red Solana en KAST, ¿cuál es la estructura de tarifas estándar mencionada en la guía paso a paso?",
+      fr: "Lors de l'envoi de stablecoins via le réseau Solana sur KAST, quelle est la structure de frais standard mentionnée dans le guide ?",
+      ru: "При отправке стейблкоинов через сеть Solana на KAST, какова стандартная структура комиссий, указанная в пошаговом руководстве?",
+      pcm: "When you dey send stablecoins through Solana network for KAST, wetin be the standard fee wey dem mention for the guide?",
+      id: "Saat mengirim stablecoin melalui jaringan Solana di KAST, berapa struktur biaya standar yang disebutkan dalam panduan langkah demi langkah?",
+      vi: "Khi gửi stablecoin qua mạng Solana trên KAST, cấu trúc phí tiêu chuẩn được đề cập trong hướng dẫn là gì?",
+      hi: "KAST पर Solana नेटवर्क के माध्यम से स्टेबलकॉइन भेजते समय, स्टेप-बाय-स्टेप गाइड में उल्लिखित मानक शुल्क संरचना क्या है?",
+      bn: "KAST-এ Solana নেটওয়ার্কের মাধ্যমে স্টেবলকয়েন পাঠানোর সময়, ধাপে ধাপে গাইডে উল্লিখিত স্ট্যান্ডার্ড ফি স্ট্রাকচার কী?",
+      ar: "عند إرسال عملات مستقرة عبر شبكة Solana على KAST، ما هو هيكل الرسوم القياسي المذكور في الدليل؟",
+      zh: "在KAST上通过Solana网络发送稳定币时，指南中提到的标准费用结构是什么？",
+      ko: "KAST에서 Solana 네트워크를 통해 스테이블코인을 보낼 때, 단계별 가이드에 언급된 표준 수수료 구조는 무엇인가요?",
+      ja: "KASTでSolanaネットワーク経由でステーブルコインを送金する際の標準手数料は？"
+    },
+    choices: ["$1 + 0.1% of the withdrawal amount.", "A flat fee of $10 regardless of the amount.", "Zero fees for all on-chain transfers.", "5% of the total transaction value."],
+    correct: 0,
+    links: [{label: "KAST Fees Explained", url: "https://academy.kast.xyz/en-us/articles/kast-fees-explained"}],
+    exp: {
+      en: 'On-chain withdrawal fees on KAST are: <strong class="text-white">Solana: $1 + 0.1%</strong> and Ethereum: $6 + 0.1%. This transparent fee structure combines a fixed base fee with a small percentage. It is neither zero-fee nor a flat $10.',
+      pt: 'As taxas de saque on-chain no KAST são: <strong class="text-white">Solana: $1 + 0,1%</strong> e Ethereum: $6 + 0,1%. Esta estrutura transparente combina uma taxa base fixa com uma pequena porcentagem.',
+      es: 'Las tarifas de retiro on-chain en KAST son: <strong class="text-white">Solana: $1 + 0,1%</strong> y Ethereum: $6 + 0,1%. Esta estructura transparente combina una tarifa base fija con un pequeño porcentaje.',
+      fr: 'Les frais de retrait on-chain sur KAST sont : <strong class="text-white">Solana : 1$ + 0,1%</strong> et Ethereum : 6$ + 0,1%. Cette structure transparente combine des frais fixes avec un petit pourcentage.',
+      ru: 'Комиссии за вывод в блокчейне на KAST: <strong class="text-white">Solana: $1 + 0,1%</strong> и Ethereum: $6 + 0,1%. Прозрачная структура, сочетающая фиксированную базу и процент.',
+      pcm: 'On-chain withdrawal fees for KAST na: <strong class="text-white">Solana: $1 + 0.1%</strong> and Ethereum: $6 + 0.1%. This transparent fee combine fixed base fee with small percentage.',
+      id: 'Biaya penarikan on-chain di KAST: <strong class="text-white">Solana: $1 + 0,1%</strong> dan Ethereum: $6 + 0,1%. Struktur biaya transparan ini menggabungkan biaya dasar tetap dengan persentase kecil.',
+      vi: 'Phí rút on-chain trên KAST: <strong class="text-white">Solana: $1 + 0,1%</strong> và Ethereum: $6 + 0,1%. Cấu trúc phí minh bạch kết hợp phí cố định với tỷ lệ phần trăm nhỏ.',
+      hi: 'KAST पर ऑन-चेन निकासी शुल्क: <strong class="text-white">Solana: $1 + 0.1%</strong> और Ethereum: $6 + 0.1%। यह पारदर्शी शुल्क संरचना निश्चित आधार शुल्क और छोटे प्रतिशत को जोड़ती है।',
+      bn: 'KAST-এ অন-চেইন উত্তোলন ফি: <strong class="text-white">Solana: $1 + 0.1%</strong> এবং Ethereum: $6 + 0.1%। এই স্বচ্ছ ফি কাঠামো নির্দিষ্ট বেস ফি এবং ছোট শতাংশ একত্রিত করে।',
+      ar: 'رسوم السحب على السلسلة في KAST: <strong class="text-white">Solana: 1$ + 0.1%</strong> وEthereum: 6$ + 0.1%. هيكل رسوم شفاف يجمع رسوماً أساسية ثابتة مع نسبة صغيرة.',
+      zh: 'KAST链上提取费用：<strong class="text-white">Solana：$1 + 0.1%</strong>，Ethereum：$6 + 0.1%。这种透明的费用结构将固定基础费用与小额百分比相结合，既非零手续费也非固定$10。',
+      ko: 'KAST의 온체인 출금 수수료: <strong class="text-white">Solana: $1 + 0.1%</strong>, Ethereum: $6 + 0.1%. 고정 기본 수수료와 소액 비율을 결합한 투명한 수수료 구조입니다.',
+      ja: 'KASTのオンチェーン出金手数料は<strong class="text-white">Solana：$1 + 0.1%</strong>、Ethereum：$6 + 0.1%です。固定手数料＋小額パーセンテージの透明な料金体系で、ゼロ手数料でも一律$10でもありません。'
+    }
+  },
+  // Q10
+  {
+    q: {
+      en: "The KAST physical card \"Solana Illuma\" is famous for what unique physical feature?",
+      pt: "O cartão físico KAST \"Solana Illuma\" é famoso por qual característica física única?",
+      es: "La tarjeta física KAST \"Solana Illuma\" es famosa por qué característica física única?",
+      fr: "La carte physique KAST \"Solana Illuma\" est célèbre pour quelle caractéristique physique unique ?",
+      ru: "Чем знаменита физическая карта KAST \"Solana Illuma\"?",
+      pcm: "The KAST physical card \"Solana Illuma\" dey famous for which special physical feature?",
+      id: "Kartu fisik KAST \"Solana Illuma\" terkenal karena fitur fisik unik apa?",
+      vi: "Thẻ vật lý KAST \"Solana Illuma\" nổi tiếng với đặc điểm vật lý độc đáo nào?",
+      hi: "KAST भौतिक कार्ड \"Solana Illuma\" किस अनूठी भौतिक विशेषता के लिए प्रसिद्ध है?",
+      bn: "KAST ফিজিক্যাল কার্ড \"Solana Illuma\" কোন অনন্য শারীরিক বৈশিষ্ট্যের জন্য বিখ্যাত?",
+      ar: "بماذا تشتهر بطاقة KAST الفعلية \"Solana Illuma\" من حيث الميزة الفيزيائية الفريدة؟",
+      zh: "KAST实体卡\"Solana Illuma\"以什么独特的物理特征而闻名？",
+      ko: "KAST 실물 카드 \"Solana Illuma\"는 어떤 독특한 물리적 특징으로 유명한가요?",
+      ja: "KAST物理カード「Solana Illuma」のユニークな物理的特徴は？"
+    },
+    choices: ["It is made of 24k solid gold.", "It has a built-in fingerprint scanner for all purchases.", "A solana logo illuminated by LED that lights up when you use the card.", "It changes color based on the price of Solana."],
+    correct: 2,
+    links: [{label: "KAST Cards Explained", url: "https://academy.kast.xyz/en-us/articles/kast-cards-explained"}],
+    exp: {
+      en: 'The Solana Illuma (Premium tier) features a <strong class="text-white">tap-activated LED light effect</strong> — the Solana logo illuminates when the card is used for contactless payment. The 24k solid gold is a feature of the Luxe tier, not the Illuma.',
+      pt: 'O Solana Illuma (tier Premium) possui um <strong class="text-white">efeito de luz LED ativado por toque</strong> — o logo Solana ilumina quando o cartão é usado em pagamento por aproximação. O ouro 24k é do tier Luxe, não do Illuma.',
+      es: 'El Solana Illuma (tier Premium) cuenta con un <strong class="text-white">efecto de luz LED activado por toque</strong> — el logo de Solana se ilumina cuando la tarjeta se usa para pagos sin contacto. El oro 24k es del tier Luxe, no del Illuma.',
+      fr: 'Le Solana Illuma (tier Premium) possède un <strong class="text-white">effet lumineux LED activé par le toucher</strong> — le logo Solana s\'illumine lors d\'un paiement sans contact. L\'or 24k est une caractéristique du tier Luxe, pas de l\'Illuma.',
+      ru: 'Solana Illuma (уровень Premium) имеет <strong class="text-white">световой LED-эффект при касании</strong> — логотип Solana подсвечивается при бесконтактной оплате. 24-каратное золото — это особенность уровня Luxe, а не Illuma.',
+      pcm: 'Solana Illuma (Premium tier) get <strong class="text-white">tap-activated LED light effect</strong> — Solana logo dey shine when you use the card for contactless payment. 24k gold na for Luxe tier, no be Illuma.',
+      id: 'Solana Illuma (tier Premium) memiliki <strong class="text-white">efek cahaya LED yang aktif saat disentuh</strong> — logo Solana menyala saat kartu digunakan untuk pembayaran nirsentuh. Emas 24k adalah fitur tier Luxe, bukan Illuma.',
+      vi: 'Solana Illuma (hạng Premium) có <strong class="text-white">hiệu ứng đèn LED kích hoạt bằng chạm</strong> — logo Solana phát sáng khi dùng thẻ thanh toán không tiếp xúc. Vàng 24k là đặc điểm của hạng Luxe, không phải Illuma.',
+      hi: 'Solana Illuma (Premium टियर) में <strong class="text-white">टैप-एक्टिवेटेड LED लाइट इफेक्ट</strong> है — कॉन्टैक्टलेस भुगतान के लिए कार्ड उपयोग करने पर Solana लोगो चमकता है। 24k सोना Luxe टियर की विशेषता है, Illuma की नहीं।',
+      bn: 'Solana Illuma (Premium টিয়ার) <strong class="text-white">ট্যাপ-অ্যাক্টিভেটেড LED লাইট ইফেক্ট</strong> সমন্বিত — কন্ট্যাক্টলেস পেমেন্টে কার্ড ব্যবহার করলে Solana লোগো জ্বলে ওঠে। 24k সোনা Luxe টিয়ারের বৈশিষ্ট্য, Illuma-র নয়।',
+      ar: 'يتميز Solana Illuma (فئة Premium) بـ<strong class="text-white">تأثير ضوء LED يعمل باللمس</strong> — يضيء شعار Solana عند استخدام البطاقة للدفع بدون تلامس. الذهب عيار 24 هو ميزة فئة Luxe وليس Illuma.',
+      zh: 'Solana Illuma（Premium等级）具有<strong class="text-white">触碰激活LED灯光效果</strong>——使用卡进行非接触支付时Solana标志会发光。24k纯金是Luxe等级的特征，不是Illuma。',
+      ko: 'Solana Illuma(프리미엄 티어)는 <strong class="text-white">탭 활성화 LED 조명 효과</strong>를 갖추고 있어, 비접촉 결제 시 Solana 로고가 빛납니다. 24k 금은 Luxe 티어의 특징이지 Illuma가 아닙니다.',
+      ja: 'Solana Illuma（Premiumティア）は<strong class="text-white">タップ起動式LEDライト</strong>を搭載しており、非接触決済時にSolanaロゴが発光します。24金はLuxeティアの特徴であり、Illumaの特徴ではありません。'
+    }
+  }
+];
+
 // ── App State ──
 let currentLang = "en";
+let currentQuiz = 1;
 
 // ── Render flag nav ──
 function renderFlags() {
@@ -749,17 +1186,68 @@ function renderFlags() {
   });
 }
 
+// ── Render hero ──
+function renderHero() {
+  const meta = QUIZ_META[currentQuiz];
+  document.title = meta.pageTitle;
+  document.getElementById("hero-title").innerHTML = meta.title;
+  document.getElementById("hero-desc").innerHTML = meta.desc;
+  document.getElementById("footer-tagline").textContent = meta.footerTagline;
+
+  document.getElementById("event-info").innerHTML =
+    `<div class="flex items-center gap-2 bg-kast-card px-4 py-2 rounded-full border border-kast-border"><span>📅</span> <span>${meta.date}</span></div>` +
+    `<div class="flex items-center gap-2 bg-kast-card px-4 py-2 rounded-full border border-kast-border"><span>🕐</span> <span>${meta.time}</span></div>` +
+    `<div class="flex items-center gap-2 bg-kast-card px-4 py-2 rounded-full border border-kast-border"><span>💬</span> <span>KAST Official Discord</span></div>` +
+    `<div class="flex items-center gap-2 bg-kast-card px-4 py-2 rounded-full border border-kast-border"><span>❓</span> <span>${meta.count} Questions</span></div>`;
+}
+
+// ── Render tabs ──
+function renderTabs() {
+  const tabs = document.getElementById("quiz-tabs");
+  tabs.querySelectorAll("button").forEach(btn => {
+    const q = parseInt(btn.dataset.quiz);
+    if (q === currentQuiz) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+    btn.onclick = () => {
+      if (currentQuiz !== q) {
+        currentQuiz = q;
+        renderTabs();
+        renderHero();
+        renderQuestions();
+        updateSummary();
+      }
+    };
+  });
+}
+
+// ── Update summary ──
+function updateSummary() {
+  document.getElementById("summary-quiz1").style.display = currentQuiz === 1 ? "" : "none";
+  document.getElementById("summary-quiz2").style.display = currentQuiz === 2 ? "" : "none";
+}
+
 // ── Render questions ──
 function renderQuestions() {
   const container = document.getElementById("questions-container");
-  // Keep category labels (first child)
-  const catLabels = container.querySelector(".flex.flex-wrap.gap-2");
-  container.innerHTML = "";
-  if (catLabels) container.appendChild(catLabels);
+  const data = currentQuiz === 1 ? QUIZ : QUIZ2;
+  const categories = QUIZ_CATEGORIES[currentQuiz];
 
-  QUIZ.forEach((item, idx) => {
+  // Render category labels
+  const catLabelsEl = document.getElementById("category-labels");
+  catLabelsEl.innerHTML = categories.map(c =>
+    `<span class="px-3 py-1 rounded-full bg-${c.color}-500/10 text-${c.color}-400 border border-${c.color}-500/20">${c.label}</span>`
+  ).join("");
+
+  // Clear questions (keep category labels)
+  const existingArticles = container.querySelectorAll("article");
+  existingArticles.forEach(a => a.remove());
+
+  data.forEach((item, idx) => {
     const num = idx + 1;
-    const [, colorClass] = catColor(num);
+    const [, colorClass] = catColor(num, currentQuiz);
     const qText = item.q[currentLang] || item.q.en;
     const expText = item.exp[currentLang] || item.exp.en;
 
@@ -813,7 +1301,10 @@ function generateQR(elementId, url) {
 
 // ── Init ──
 renderFlags();
+renderHero();
+renderTabs();
 renderQuestions();
+updateSummary();
 generateQR('qr-kast', 'https://go.kast.xyz/VqVO/SAPPORO');
 generateQR('qr-discord', 'https://discord.gg/sFGewYk9YQ');
 </script>
